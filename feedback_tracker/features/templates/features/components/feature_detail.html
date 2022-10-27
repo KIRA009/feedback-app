@@ -1,0 +1,21 @@
+{% load prev_url_helper %}
+<a hx-get="{{ request.GET.prev_url }}" hx-target="#main-content" class="btn btn-link p-0">back</a>
+<h1>Feedback for {{ feature.name }} ({{ feature.num_feedback }})</h1>
+<br>
+{% for tag in feature.tags.all  %}
+    <span hx-get="{% url 'feature-filter-by-tag' tag.pk %}?prev_url={% prev_url_helper %}" hx-target="#main-content" class="badge rounded-pill" style="background-color: {{ tag.color }};">{{ tag.name }}</span>
+{% endfor %}
+
+{% for feedback in feature.feedback.all  %}
+<div class="card mt-3">
+    <div class="card-body">
+      <h5 class="card-title">{{ feedback.comment }}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">
+        {{ feedback.user.username }}
+        {% if feedback.user.email %}
+            ({{ feedback.user.email }})
+        {% endif %}
+      </h6>
+    </div>
+  </div>
+{% endfor %}

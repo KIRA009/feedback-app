@@ -1,0 +1,46 @@
+{% load ordering_helper prev_url_helper %}
+
+<h1>All Tags ({{ total_count }})</h1>
+<br>
+<div class="d-flex justify-content-end">
+    <button hx-get="{% url 'tag-add' %}" hx-target="#dialog">
+        Create Tag
+    </button>
+</div>
+<table class="table table-striped">
+    {% prev_url_helper as prev_url %}
+    {% firstof curr_path request.path as curr_path %}
+    <thead>
+        <tr>
+            <th scope="col" class="table__header-item" hx-get="{{ curr_path }}{% ordering_helper "name" %}" hx-target="#main-content">
+                Name
+            </th>
+            <th scope="col" class="table__header-item" hx-get="{{ curr_path }}{% ordering_helper "num_features" %}" hx-target="#main-content">
+                Total Tagged features
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tag in tags  %}
+            <tr class="list__item">
+                <td>
+                    <span class="badge rounded-pill" style="background-color: {{ tag.color }};">{{ tag.name }}</span>
+                    <ul class="list__item-actions ms-0 ps-0">
+                        <li>
+                            (<a hx-get="{% url 'tag-edit' tag.pk %}" hx-target="#dialog" class="btn btn-link p-0">edit</a>)
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    {% if tag.num_features %}
+                    <a hx-get="{% url 'feature-filter-by-tag' tag.pk %}?prev_url={{ prev_url }}" hx-target="#main-content" class="btn btn-link p-0">
+                        {{ tag.num_features }}
+                    </a>
+                    {% else %}
+                    0
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

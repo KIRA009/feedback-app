@@ -1,0 +1,43 @@
+{% load ordering_helper prev_url_helper %}
+<table class="table table-striped">
+    {% prev_url_helper as prev_path %}
+    {% firstof curr_path request.path as curr_path %}
+    <thead>
+        <tr>
+            <th scope="col" class="table__header-item" hx-get="{{ curr_path }}{% ordering_helper "name" %}" hx-target="#main-content">
+                Name
+            </th>
+            <th scope="col" class="table__header-item" hx-get="{{ curr_path }}{% ordering_helper "num_feedback" %}" hx-target="#main-content">
+                Total feedback
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for feature in features  %}
+            <tr class="list__item">
+                <td>
+                    {{ feature.name }}
+                    {% for tag in feature.tags.all  %}
+                        <span hx-get="{% url 'feature-filter-by-tag' tag.pk %}?prev_url={{ prev_path }}" hx-target="#main-content" class="badge rounded-pill" style="background-color: {{ tag.color }};">{{ tag.name }}</span>
+                    {% endfor %}
+                    <ul class="list__item-actions ms-0 ps-0">
+                        <li>
+                            (<a hx-get="{% url 'feature-edit' feature.pk %}" hx-target="#dialog" class="btn btn-link p-0">edit</a>)
+                        </li>
+                        <li>
+                            (<a hx-get="{% url 'feature-add-feedback' feature.pk %}" hx-target="#dialog" class="btn btn-link p-0">+feedback</a>)
+                        </li>
+                        <li>
+                            (<a hx-get="{% url 'feature-add-tag' feature.pk %}" hx-target="#dialog" class="btn btn-link p-0">+tags</a>)
+                        </li>
+                    </ul>
+                </td>
+                <td scope="col" class="table__header-item">
+                    <a hx-get="{% url 'feature-detail' feature.pk %}?prev_url={{ prev_path }}" hx-target="#main-content" class="btn btn-link p-0">
+                        {{ feature.num_feedback }}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

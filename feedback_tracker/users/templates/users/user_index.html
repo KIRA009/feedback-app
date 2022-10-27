@@ -1,0 +1,5 @@
+{% extends "common/base.html" %}
+
+{% block content %}
+<div hx-trigger="load, userListChanged from:body" hx-get="{% url 'user-list' %}" hx-target="this"></div>
+{% endblock %}

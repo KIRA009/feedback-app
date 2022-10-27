@@ -1,0 +1,11 @@
+<h1>Filtered Features ({{ total_count }})</h1>
+<br>
+<div class="d-flex justify-content-between">
+    <h4>
+        Filtered to user "{{ user.username }}" ( <a hx-get="{{ request.GET.prev_url }}" hx-target="#main-content" class="btn btn-link p-0">clear filter</a> )
+    </h4>
+    <button hx-get="{% url 'feature-add' %}" hx-target="#dialog">
+        Create Feature
+    </button>
+</div>
+{% include 'features/components/features_table.html' with features=features %}

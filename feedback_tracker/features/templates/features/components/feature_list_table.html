@@ -1,0 +1,8 @@
+<h1>All Features ({{ total_count }})</h1>
+<br>
+<div class="d-flex justify-content-end">
+    <button hx-get="{% url 'feature-add' %}" hx-target="#dialog">
+        Create Feature
+    </button>
+</div>
+{% include 'features/components/features_table.html' with features=features %}

@@ -1,0 +1,45 @@
+{% load ordering_helper prev_url_helper %}
+
+<table class="table table-striped">
+    {% prev_url_helper as prev_path %}
+    {% firstof curr_path request.path as curr_path %}
+    <thead>
+        <tr>
+            <th scope="col" class="table__header-item" hx-get="{{ curr_path }}{% ordering_helper "username" %}" hx-target="#main-content">
+                Name
+            </th>
+            <th scope="col" class="table__header-item" hx-get="{{ curr_path }}{% ordering_helper "email" %}" hx-target="#main-content">
+                Email
+            </th>
+            <th scope="col" class="table__header-item" hx-get="{{ curr_path }}{% ordering_helper "num_features" %}" hx-target="#main-content">
+                Features
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users  %}
+            <tr class="list__item">
+                <td>
+                    {{ user.username }}
+                    <ul class="list__item-actions ms-0 ps-0">
+                        <li>
+                            (<a hx-get="{% url 'user-edit' user.pk %}" hx-target="#dialog" class="btn btn-link p-0">edit</a>)
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    {{ user.email }}
+                </td>
+                <td>
+                    {% if user.num_features %}
+                    <a hx-get="{% url 'feature-filter-by-user' user.pk %}?prev_url={{ prev_path }}" hx-target="#main-content" class="btn btn-link p-0">
+                        {{ user.num_features }}
+                    </a>
+                    {% else %}
+                    0
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,26 @@
+.list__item-actions {
+    list-style: none;
+    visibility: hidden;
+    column-gap: 10px;
+    display: flex;
+}
+
+.table__header-item:hover {
+    cursor: pointer;
+}
+
+.list__item:hover .list__item-actions {
+    visibility: visible;
+}
+
+.nav-item.active {
+    font-weight: 700;
+}
+
+.form__errors {
+    color: #990000;
+}
+
+.badge:hover {
+    cursor: pointer;
+}

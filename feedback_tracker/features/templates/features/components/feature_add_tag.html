@@ -1,0 +1,27 @@
+<form hx-post="{{ request.path }}" class="modal-content">
+    {% csrf_token %}
+    <div class="modal-header">
+        <h5 class="modal-title">Edit tags</h5>
+    </div>
+    <div class="modal-body">
+        {% for field in form %}
+        <div class="mb-3">
+            <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+            <br>
+            {{ field }}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="d-flex justify-content-start modal-footer">
+        <button type="submit">Edit tags</button>
+        <button type="button" data-bs-dismiss="modal">Cancel</button>
+    </div>
+</form>
+
+<script>
+    $("#{{ form.tags.id_for_label }}").select2({
+        tags: true,
+        dropdownParent: $("#modal"),
+        width: '100%'
+    });
+</script>
